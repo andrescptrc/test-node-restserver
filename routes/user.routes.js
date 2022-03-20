@@ -1,11 +1,13 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
+
 const {
   getUsers,
   createUsers,
   updateUsers,
   deleteUsers,
 } = require("../controllers/users.controllers");
+const { isAValidRole } = require("../helpers/db-validators.helper");
 const {
   validateValues,
 } = require("../middlewares/values-validator.middlewares");
@@ -24,7 +26,8 @@ router.post(
       { min: 6 }
     ),
     check("email", "The email is not valid").isEmail(),
-    check("role", "The rol is not valid").isIn(["ADMIN_ROLE", "USER_ROLE"]),
+    // check("role", "The rol is not valid").isIn(["ADMIN_ROLE", "USER_ROLE"]),
+    check("role").custom(isAValidRole),
     validateValues,
   ],
   createUsers
