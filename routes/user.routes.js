@@ -6,6 +6,9 @@ const {
   updateUsers,
   deleteUsers,
 } = require("../controllers/users.controllers");
+const {
+  validateValues,
+} = require("../middlewares/values-validator.middlewares");
 
 const router = Router();
 
@@ -22,6 +25,7 @@ router.post(
     ),
     check("email", "The email is not valid").isEmail(),
     check("role", "The rol is not valid").isIn(["ADMIN_ROLE", "USER_ROLE"]),
+    validateValues,
   ],
   createUsers
 );

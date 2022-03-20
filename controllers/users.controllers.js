@@ -2,7 +2,6 @@ const { response, request } = require("express");
 const argon2 = require("argon2");
 
 const User = require("../models/user.model");
-const { validationResult } = require("express-validator");
 
 const getUsers = (req = request, res = response) => {
   const { q, name = "No name", apiKey } = req.query;
@@ -25,10 +24,6 @@ const updateUsers = (req, res = response) => {
 };
 
 const createUsers = async (req, res = response) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) return res.status(400).json(errors);
-
   const { name, email, password, role } = req.body;
 
   const user = new User({ name, email, password, role });
