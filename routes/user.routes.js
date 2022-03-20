@@ -7,7 +7,11 @@ const {
   updateUsers,
   deleteUsers,
 } = require("../controllers/users.controllers");
-const { isAValidRole, existEmail } = require("../helpers/db-validators.helper");
+const {
+  isAValidRole,
+  existEmail,
+  existUserById,
+} = require("../helpers/db-validators.helper");
 const {
   validateValues,
 } = require("../middlewares/values-validator.middlewares");
@@ -16,7 +20,16 @@ const router = Router();
 
 router.get("/", getUsers);
 
-router.put("/:id", updateUsers);
+router.put(
+  "/:id",
+  [
+    check("id", "The ID is not valid").isMongoId(),
+    check("id").custom(existUserById),
+    check("role").custom(isAValidRole),
+    validateValues,
+  ],
+  updateUsers
+);
 
 router.post(
   "/",

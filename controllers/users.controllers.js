@@ -16,7 +16,7 @@ const getUsers = (req = request, res = response) => {
 
 const updateUsers = async (req, res = response) => {
   const { id } = req.params;
-  const { password, google, email, ...rest } = req.body;
+  const { _id, password, google, email, ...rest } = req.body;
 
   //TODO: validate id on bd
   if (password) {
