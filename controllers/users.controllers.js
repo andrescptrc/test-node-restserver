@@ -27,15 +27,6 @@ const createUsers = async (req, res = response) => {
   const { name, email, password, role } = req.body;
   const user = new User({ name, email, password, role });
 
-  // Verify if the email exists
-  const existEmail = await User.findOne({ email });
-
-  if (existEmail) {
-    return res.status(400).json({
-      msg: "The email is already registered",
-    });
-  }
-
   //Encript the password
   const hashPassword = await argon2.hash(password);
   user.password = hashPassword;

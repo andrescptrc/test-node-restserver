@@ -7,7 +7,7 @@ const {
   updateUsers,
   deleteUsers,
 } = require("../controllers/users.controllers");
-const { isAValidRole } = require("../helpers/db-validators.helper");
+const { isAValidRole, existEmail } = require("../helpers/db-validators.helper");
 const {
   validateValues,
 } = require("../middlewares/values-validator.middlewares");
@@ -28,6 +28,7 @@ router.post(
     check("email", "The email is not valid").isEmail(),
     // check("role", "The rol is not valid").isIn(["ADMIN_ROLE", "USER_ROLE"]),
     check("role").custom(isAValidRole),
+    check("email").custom(existEmail),
     validateValues,
   ],
   createUsers
