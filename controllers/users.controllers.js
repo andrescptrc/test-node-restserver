@@ -14,12 +14,22 @@ const getUsers = (req = request, res = response) => {
   });
 };
 
-const updateUsers = (req, res = response) => {
+const updateUsers = async (req, res = response) => {
   const { id } = req.params;
+  const { password, google, email, ...rest } = req.body;
+
+  //TODO: validate id on bd
+  if (password) {
+    //Encript the password
+    const hashPassword = await argon2.hash(password);
+    rest.password = hashPassword;
+  }
+
+  const user = await User.findByIdAndUpdate(id, rest);
 
   res.status(400).json({
-    msg: "put API - controller",
-    id: Number(id),
+    msg: "The user has been updated succesfully",
+    user,
   });
 };
 
