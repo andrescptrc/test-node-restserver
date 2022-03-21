@@ -25,7 +25,9 @@ const updateUsers = async (req, res = response) => {
     rest.password = hashPassword;
   }
 
-  const user = await User.findByIdAndUpdate(id, rest);
+  const user = await User.findByIdAndUpdate(id, rest, { new: true });
+
+  console.log(user);
 
   res.status(400).json({
     msg: "The user has been updated succesfully",
