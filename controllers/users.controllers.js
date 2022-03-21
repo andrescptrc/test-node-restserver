@@ -47,9 +47,20 @@ const createUsers = async (req, res = response) => {
   });
 };
 
-const deleteUsers = (req, res = response) => {
-  res.status(403).json({
-    msg: "delete API - controller",
+const deleteUsers = async (req, res = response) => {
+  const { id } = req.params;
+
+  //Delete total
+  // const user = await User.findByIdAndDelete(id);
+
+  const user = await User.findByIdAndUpdate(
+    id,
+    { state: false },
+    { new: true }
+  );
+
+  res.json({
+    user,
   });
 };
 module.exports = { getUsers, createUsers, updateUsers, deleteUsers };
