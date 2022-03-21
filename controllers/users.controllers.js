@@ -3,15 +3,11 @@ const argon2 = require("argon2");
 
 const User = require("../models/user.model");
 
-const getUsers = (req = request, res = response) => {
-  const { q, name = "No name", apiKey } = req.query;
+const getUsers = async (req = request, res = response) => {
+  const { limit = 5, from = 0 } = req.query;
+  const users = await User.find().skip(from).limit(limit);
 
-  res.status(403).json({
-    msg: "get API - controller",
-    q,
-    name,
-    apiKey,
-  });
+  res.json({ users });
 };
 
 const updateUsers = async (req, res = response) => {
@@ -27,12 +23,7 @@ const updateUsers = async (req, res = response) => {
 
   const user = await User.findByIdAndUpdate(id, rest, { new: true });
 
-  console.log(user);
-
-  res.status(400).json({
-    msg: "The user has been updated succesfully",
-    user,
-  });
+  res.json({ user });
 };
 
 const createUsers = async (req, res = response) => {
