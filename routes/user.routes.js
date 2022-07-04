@@ -12,9 +12,13 @@ const {
   existEmail,
   existUserById,
 } = require("../helpers/db-validators.helper");
+
 const {
   validateValues,
-} = require("../middlewares/values-validator.middlewares");
+  validateJWT,
+  isAdmin,
+  hasRole,
+} = require("../middlewares");
 
 const router = Router();
 
@@ -50,6 +54,9 @@ router.post(
 router.delete(
   "/:id",
   [
+    validateJWT,
+    hasRole("ADMIN_ROLE", "FINANCE_ROLE"),
+    // isAdmin,
     check("id", "The ID is not valid").isMongoId(),
     check("id").custom(existUserById),
     validateValues,
